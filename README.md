@@ -7,9 +7,10 @@
 *   Credits: 5 CP
 *   Dozent: Prof. Marc Fischlin
 *   Betreuer: Jacqueline Brendel (organisatorisch), Christian Janson (inhaltlich).
-*   Vorlesung:
+*   Vorlesung: Freitags, 11:40–13:20 in S1|01 A1.
 *   Prüfungsart: Klausur, vorraussichtlich am 05. März 2019, 17:00–18:30.
-*   Links: [Moodle](), 
+*   Links: [Moodle](https://moodle.informatik.tu-darmstadt.de/course/view.php?id=443), [Veranstaltungswebseite](https://www.cryptoplexity.informatik.tu-darmstadt.de/teaching_/compsyssec/compsyssec.de.jsp).
+*   Notizen zur Vorlesung: [PDF](notizen.pdf).
 
 Übungen werden elektronisch (per Moodle) abgegeben. 
 Jeden Freitag gibt es eine neue Übung, für die jeweils zwei Wochen Zeit sind, und die elektronisch auf Moodle abgegeben werden müssen. Gruppenarbeit ist bei den Übungen erlaubt. Durch die Übungen kann ein Bonus für die Klausur generiert werden.
@@ -39,5 +40,13 @@ Teil II: IT-Sicherheit und Zuverlässigkeit
 
 ## Vorlesungen
 
+
+## Folien
+
+*   [Administration](folien/00Administration.pdf)
+*   [Introduction](folien/01Introduction.odf)
+*   [Encryption](folien/02Encryption.pdf)
+*   [Digital Signatures](folien/03DigitalSignatures.pdf)
+*   [Authentication und Authorization](folien/04Authentication_and_Authorization.pdf)
 
 ## Literatur
