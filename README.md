@@ -38,15 +38,18 @@ Teil II: IT-Sicherheit und Zuverlässigkeit
 *   Grundkonzepte der Software-Sicherheit 
 *   Zuverlässige Systeme: Fehlertoleranz, Redundanz, Verfügbarkeit
 
-## Vorlesungen
-
-
 ## Folien
 
-*   [Administration](folien/00Administration.pdf)
-*   [Introduction](folien/01Introduction.odf)
-*   [Encryption](folien/02Encryption.pdf)
-*   [Digital Signatures](folien/03DigitalSignatures.pdf)
-*   [Authentication und Authorization](folien/04Authentication_and_Authorization.pdf)
+*   [Administration](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16185).
+*   [Introduction](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16186).
+*   [Encryption](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16187).
+*   [Digital Signatures](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16188).
+*   [Authentication and Authorization](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16189).
+
+## Übungen
+
+*   Übung 1 (29.10.2018 – 09.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/92981/mod_resource/content/1/1exercise.pdf). [Zusatzmaterial](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/92980/mod_resource/content/1/Zusatzmaterial%20zu%20Hausuebung1.pdf). [Präsenzlösung](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/93038/mod_resource/content/1/1solutionpraesenz.pdf).
 
 ## Literatur
+
+*TBA.*
