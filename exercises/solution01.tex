@@ -319,18 +319,52 @@ block 3: 0
 \end{lstlisting}
 Hier sieht man, dass im ersten Block 64 Bitfehler entstanden sind (man erwartet, dass 50\% der Bits fehlerhaft sind, das ist also exakt wie erwartet). Im zweiten Block sind nur noch 12 Bitfehler (das macht ebenso Sinn, da hier nur die Bits falsch sind, die im ersten Chiffratenblock falsch waren). Das Experiment bestätigt also diese Antwort.
 
-\paragraph{Hausübung 3: Kasiski-Test.} Sie haben einen Ciphertext abgefangen und wissen, dass es sich bei der Verschlüsselung um eine Vigenère-Verschlüsselung handelt. Der Ciphertext hat die folgende Form:
+\subsection*{Hausübung 3: Kasiski-Test}
+
+\emph{Sie haben einen Ciphertext abgefangen und wissen, dass es sich bei der Verschlüsselung um eine Vigenère-Verschlüsselung handelt. Der Ciphertext hat die folgende Form:}
 \begin{verbatim}
     EckOstgloaUclxatrxmfUclxrvkuikugfqwobxvKdfeywtqxpdbcgkw
     CcbomsxxrKdfeywtqxpfhcaxvjclkmubtwafqbgzpdmaafbxvzpjxr
 \end{verbatim}
-Wenden Sie den Kasiski-Test an, um die benutzte Schlüssellänge zu ermitteln. Bearbeiten Sie dafür folgende Schritte:
-\begin{enumerate}[label=\alph*)]
-\item Suchen Sie alle eindeutig doppelt vorkommende $N$-Gramme (für $N \leq 4$) im Ciphertext und berechnen Sie den Abstand (Position des ersten Auftretens minus die Position des zweiten Auftretens) zwischen beiden gleichen $N$-Grammen.
-\item Bestimmen Sie die Primfaktorzerlegung für alle gefundenen Differenzen.
-\item Für den Fall, dass die Wiederholung des $N$-Gramms nicht zufällig, sondern aufgrund einer Wiederholung eines $N$-Gramms im Klartext aufgetreten ist, enthält die Primfaktorzerlegung dieser Differenz einen Teiler der Schlüssellänge oder die Schlüssellänge selbst. Vermuten Sie die Länge des verwendeten Schlüssels.
-\item Nachdem Sie die Schlüssellänge in Aufgabenteil c) bestimmt haben, versuchen Sie nun den Text zu entschlüsseln. Sie konnten außerdem in Erfahrung bringen, dass der zweite Buchstabe im Schlüssel ein \verb|Y| und der Vierte ein \verb|E| ist. Benutzen Sie diese Information um den Schlüssel zu ermitteln und dann den Klartext zu berechnen.
-\end{enumerate}
+\emph{Wenden Sie den Kasiski-Test an, um die benutzte Schlüssellänge zu ermitteln. Bearbeiten Sie dafür folgende Schritte.}
+
+\medskip\noindent
+\emph{Suchen Sie alle eindeutig doppelt vorkommende $N$-Gramme (für $N \leq 4$) im Ciphertext und berechnen Sie den Abstand (Position des ersten Auftretens minus die Position des zweiten Auftretens) zwischen beiden gleichen $N$-Grammen.}
+
+\medskip\noindent
+Hier kann man ein kleines Ruby-Programm schreiben, um die N-Gramme und deren Abstand zu finden.
+\begin{lstlisting}[language=ruby]
+data = "EckOstgloaUclxatrxmfUclxrvkuikugfqwobxvKdfeywtqxpdbcgkwCcbomsxxrKdfeyw
+tqxpfhcaxvjclkmubtwafqbgzpdmaafbxvzpjxr".split.join
+
+# find n-grams (4 or longer) and their distance. 
+ngrams = []
+(0..data.size).each do |a|
+  (a+1..data.size).each do |b|
+    len = 0
+    while data[a+len] == data[b+len]
+      len += 1
+    end
+
+    if len >= 4
+      ngrams << [b - a, data[a...a+len]]
+    end
+  end
+end
+
+p ngrams  
+\end{lstlisting}
+Dieses Programm findet zwei N-Gramme.
+
+\bigskip\noindent
+\emph{Bestimmen Sie die Primfaktorzerlegung für alle gefundenen Differenzen.}
+
+\bigskip\noindent
+\emph{Für den Fall, dass die Wiederholung des $N$-Gramms nicht zufällig, sondern aufgrund einer Wiederholung eines $N$-Gramms im Klartext aufgetreten ist, enthält die Primfaktorzerlegung dieser Differenz einen Teiler der Schlüssellänge oder die Schlüssellänge selbst. Vermuten Sie die Länge des verwendeten Schlüssels.}
+
+\bigskip\noindent
+\emph{Nachdem Sie die Schlüssellänge in Aufgabenteil c) bestimmt haben, versuchen Sie nun den Text zu entschlüsseln. Sie konnten außerdem in Erfahrung bringen, dass der zweite Buchstabe im Schlüssel ein \texttt{Y} und der Vierte ein \texttt{E} ist. Benutzen Sie diese Information um den Schlüssel zu ermitteln und dann den Klartext zu berechnen.}
+
 
 
 
