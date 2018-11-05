@@ -1,0 +1,340 @@
+\documentclass[
+  ngerman,
+  DIV=12
+]{scrartcl}
+\usepackage{babel}
+\usepackage{csquotes}
+
+% typography
+\usepackage{fontspec}
+\usepackage{newpxmath}
+\setsansfont{Open Sans}[
+  BoldFont={Open Sans Bold},
+  ItalicFont={Open Sans Italic}]
+\setmonofont[Scale=0.87]{Menlo}
+\setmainfont{Palatino}
+\linespread{1.15}
+\usepackage[factor=1000]{microtype}
+
+% graphics, drawings, etc.
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{positioning}
+\newtcolorbox{anmerkung}{%
+  grow to left by=10pt,
+  colback=black!10,
+  colframe=white,
+  coltitle=black,
+  borderline west={4pt}{0pt}{black!30},
+  boxrule=0pt,
+  boxsep=0pt,
+  %breakable,
+  enhanced jigsaw,
+  title={Anmerkung\par},
+  fonttitle={\bfseries},
+  attach title to upper={}}
+
+% highlighting, lists, code
+\usepackage{soul}
+\usepackage{enumitem}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  %escapeinside=||,
+  keywordstyle=\color{blue!50!black},
+  stringstyle=\color{green!50!black}}
+\capsdef{////}{\scshape}{.16em}{.4em}{.2em}
+
+% math
+\usepackage{amsmath,amssymb}
+
+% nice tables
+\usepackage{booktabs}
+\newcommand{\tablespacing}[1]{\renewcommand{\arraystretch}{#1}}
+
+% links
+\usepackage[
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+]{hyperref}
+
+\title{Lösungsblatt Nr. 1}
+\date{Wintersemester 2018-2019}
+\author{Marc Fischlin, Jacqueline Brendel, Christian Janson}
+\subject{Computersystemsicherheit}
+\subtitle{von Patrick Elsen}
+\publishers{Technische Universität Darmstadt}
+
+\begin{document}
+\maketitle
+
+\section*{Gruppenübung}
+Die Übungsaufgaben in diesem Bereich sind Gegenstand der Übungen in der Woche vom 29.10.2018–02.11.2018.
+
+\subsection*{Aufgabe 1 (Verständnisaufgaben).} 
+In dieser Aufgabe prüfen wir unser Verständnis über den Inhalt der Vorlesung.
+
+\medskip\noindent
+\emph{Benennen Sie die drei Schutzziele aus der Vorlesung.}
+
+\medskip\noindent
+Das erste Schutzziel ist \emph{Vertraulichkeit}: die Eigentschaft, dass Informationen nicht Unberechtigten zur Verfügung gestellt wird). \emph{Integrität} bedeutet, dass Informationen akkurat, komplett und unversehrt ist. \emph{Verfügbarkeit} bedeutet, dass auf Informationen zugegriffen werden kann.
+
+\bigskip\noindent
+\emph{Was besagt Kerckhoffs-Prinzip?}
+
+\medskip\noindent
+Das Kerckhoffs-Prinzip sagt, dass die Sicherheit eines kryptographischen Systems nicht auf der Geheimhaltung des Systems, sondern auf der des Schlüssels beruht. 
+
+Will man ein sicheres System bauen, muss man davon ausgehen, dass der Angreifer das System kennt. Die Sicherheit darf also nicht darauf beruhen, dass der Angreifer das System nicht versteht. Ein sicheres System muss auch dann sicher sein, wenn es bekannt ist. 
+
+\bigskip\noindent
+\emph{Was besagt die funktionale Korrektheit eines symmetrischen Verschlüsselungsverfahren?}
+
+\medskip\noindent
+Die funktionale Korrektheit (auch \emph{Vollständigkeit}) besagt, dass man mit allen Schlüsseln jede Nachricht erfolgreich ver- und entschlüsseln kann. Man schreibt also:
+\begin{equation*}
+\forall m \in M, k \in K: \textrm{dec}(k, \textrm{enc}(k, m)) = m  
+\end{equation*}
+
+
+\subsection*{Aufgabe 2: Schutzziele.}
+Wie Sie in der Vorlesung gelernt haben, bietet die deutsche Sprache keine eigenen Worte für \emph{Safety} und \emph{Security}. Beide Worte werden in der Regel mit Sicherheit übersetzt.
+\emph{Safety} bezieht sich auf die Verlässlichkeit von IT-Systemen in Bezug auf Ablauf- und Ausfallsicherheit. Häufig übersetzt mit Betriebssicherheit.
+\emph{Security} wird oft mit Angriffssicherheit übersetzt und spaltet sich dabei in die Teilaspekte \emph{Authenzität}, \emph{Integrität}, \emph{Vertraulichkeit}, \emph{Verfügbarkeit} und \emph{Verbindlichkeit}. 
+
+\medskip\noindent\emph{Im Folgenden sind einige Szenarien gegeben, die eine Verletzung bestimmter Eigenschaften aufzeigen. Bitte nennen Sie die verletze Schutzeigenschaft und ggf. den Teilaspekt.}
+
+\begin{table}[!h]\centering\tablespacing{1.3}
+\begin{tabular}{@{}p{10.5cm}p{4.7cm}@{}}
+\toprule
+\bfseries\small\caps{SZENARIO} & \bfseries\small\caps{SCHUTZEIGENSCHAFT}\\
+\midrule
+Durch Abhören eines Firmennetzwerkes ist es möglich, Passwörter von Mitarbeitern abzufangen. & Security (Vertraulichkeit)\\
+Durch einen Programmierfehler in der Software des U-Bahn-Betriebs kommt es in letzter Zeit häufiger zu Abstürzen und einzelne Bahnen bleiben dabei auch unvorhergesehen in Tunneln stehen. & Safety\\
+Ein Vorgesetzter beauftragt seinen Mitarbeiter eine Reise für ihn im internen Buchungssystem zu buchen. Der Mitarbeiter möchte aber nicht mit der Buchung in Verbindung stehen und beauftragt den Datenbankbeauftragten seinen Namen zu entfernen. & Security (Verbindlichkeit)\\
+Durch eine Schwachstelle in einer Web Applikation ist es beliebigen (auch nicht registrierten) Nutzern möglich Gästebucheinträge zu verändern. & Security (Integrität)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Aufgabe 3: Teilertheorie und Modulare Arithmetik}
+
+
+\emph{Berechnen SieL}
+\begin{align*}
+\text{i)}&& 7 \equiv 1&\mod 2 & \text{ii)}&& 3^5 = 243 \equiv 5&\mod 7 \\
+\text{iii)}&&4^3 \equiv 1^3 = 1&\mod 3 & \text{iv)}&& 12 \equiv 0 &\mod 4\\
+\end{align*}\vspace{-6ex}
+
+\noindent
+\emph{Zeigen Sie, dass 429 und 595 teilerfremd sind.}
+
+\medskip\noindent
+Das geht am einfachsten mit dem Euklidischen Algorithmus, der den größten gemeinsamen Teiler von zwei beliebigen Zahlen bestimmen kann. \hl{TODO}.
+
+\bigskip\noindent
+\emph{Sei $n \in \mathbb{N}$ und sei $p \in \mathbb{N}$ ein Teiler von $n$, d. h. $p \mid n$. Zeigen Sie:}
+
+\medskip\noindent
+\hl{TODO}.
+
+\paragraph{Aufgabe 4: One-Time-Pad (Vernam Chiffre).} In der Vorlesung haben Si edas One-Time-Pad (Vernam Chiffre) kennengelernt.
+
+\begin{enumerate}[label=\alph*)]
+\item Erinnern Sie sich an die Definition des OTP und notieren Sie wie die Verschlüsselung einer Nachricht $m$ und Entschlüsselung des resultierenden Chiffrats $c$ funktioniert.
+
+Bei einer One-Time-Pad-Verschlüsselung benutzt man die bitweise Exclusive-OR (XOR) Funktion, um die Nachricht zu verschlüsseln und um das Chiffrat zu entschlüsseln. 
+\begin{align*}
+  c &= m \oplus k & m &= c \oplus k & k &= m \oplus c
+\end{align*}
+\item Gegeben sind folgende Nachricht $m = 1010\,1111$ und der Schlüssel $k = 1111\,0000$. Berechnen Sie das OTP Chiffrat.
+
+\begin{equation*}
+\begin{array}{c}
+\phantom{\oplus9}1010\,1111\\
+\underline{\oplus\phantom{9}1111\,0000}\\
+\phantom{\oplus9}0101\,1111\\
+\end{array}
+\end{equation*}
+\item Was ist perfekte Sicherheit? Und warum erfüllt das OTP diese?
+
+Perfekte Sicherheit ist die Eigenschaft einer Verschlüsselung, dass das Chiffrat keine Informationen über die Nachricht besitzt. Es können aus diesem also keine Schlüsse über die Nachricht gezogen werden. OTP besitzt perfekte Sicherheit, wenn der Schlüssel geheim ist und zufällig generiert wurde. 
+
+Da der Schlüssel zufällig gewählt wurde, ist jedes Bit zu 50\% $1$ und zu 50\% $0$. Durch den XOR-Operator wird damit jedes Bit der Nachricht zu 50\% geflipped. Damit besitzt das Chriffrat keine Informationen mehr über die Nachricht: jedes Bit ist zu 50\% ein Bit der Nachricht oder zu 50\% ein geflipptes Bit. 
+\item Diskutieren Sie warum das OTP unsicher wird sobald man den Schlüssel mehrmals verwendet. Unter welchen Umständen wird das OTP auch unsicher?
+
+% TODO
+
+\item Diskutieren Sie was passiert wenn Sie XOR ($\oplus$) durch die Operation ODER ($\vee$) im OTP ersetzen.
+
+Mit der Operation ODER kann der OTP nicht funktionieren. Die Funktionsweise des OTP hängt von der Eigenschaft der XOR-Operation, dass eine wiederholte Anwendung zurück zum Klartext führt. Mathematisch braucht man also einen Operator $\circ$, so dass gilt:
+\begin{equation*}
+m = (m \circ k) \circ k  
+\end{equation*}
+Diese Eigenschaft ist mit dem ODER-Operator nicht gegeben, was an folgenden Beispiel illustriert werden kann:
+\begin{equation*}
+0 \neq (0 \vee 1) \vee 1
+\end{equation*}
+\end{enumerate}
+
+\paragraph{Aufgabe 5: Angriff auf eine Chiffre (Known-Plaintext-Attack).} Im Folgenden wollen wir einen Angriff auf eine Chiffre betrachten. Die zu verschlüsselende Nachricht $m$ und das resultierende Chiffrat $c$ sind Bitstrings der Länge $n$ (d.h. $m, c \in \{0, 1\}^n$). Der für die Verschlüsselung notwendige Schlüssel ist folgendermaßen definiert:
+\begin{itemize}
+\item einem Bitstring $k \in \{0, 1\}^n$.
+\item einer quadratischen invertierbaren Matrix $M \in \{0, 1\}^{n \times m}$.
+\item Funktionen $f_i: \{0, 1\}^n \to \{0, 1\}$ für $i = 1,\dots, n$.
+\end{itemize}
+Die Verschlüsselungsoperation für eine beliebige Nachricht $m \in \{0, 1\}^n$ und Schlüssel ist wie folgt definiert:
+\begin{enumerate}
+\item Setze $v = M * m$, wobei $v = (v_1, \dots, v_n)$.
+\item Berechne die $i$-te Chriffratkomponente $c_i = v_i \oplus f_i(k)$ für $i = 1, \dots, n$.  
+\end{enumerate}
+Dadurch erhalten Sie das Chiffrat $c = (c_1, \dots, c_n)$.
+
+Sie haben jetzt folgende Klartext und Chiffrat Paare abgefangen:
+
+% TODO Table
+
+Diese Informationen genügen, um jedes beliebige Chiffrat effizient zu entschlüsseln, obwohl die Funktionen $f_i$ und die Matrix $M$ unbekannt sind. Brechen Sie die obige Chiffre und berechnen Sie den Klartext hinder dem Chiffrat $c = (0010)$.
+
+% TODO
+
+\section{Hausübung}
+
+Dieser Bereich ist dazu gedacht das Gelernte weiter zu vertiefen. Dazu werden je nach Themen weitere Übungsaufgaben, ergänzende Beweise oder ähnliche Aufgaben gestellt. Die Aufgaben sind freiwillig, können aber, bei erfolgreicher Bearbeitung, zu Bonuspunkten in der Klausur führen. Die Abgabe dieser Übungen erfolgt über \emph{Moodle} und kann in Gruppen mit bis zu vier Studenten (\emph{aus Ihrer eigenen Übungsgruppe}) eingereicht werden. Abgaben werden nur als PDF-Dateien akzeptiert. Denken Sie bitte daran, dass Ihre Lösungen nachvollziehbar und entsprechend ausführlich dargestellt werden sollen.
+
+\medskip\noindent
+Für Gruppenabgaben ist folgendes zu beachten: Sie müssen in der Abgabe (.pdf-Datei) deutlich und eindeutig kennzeichnen mit welchen Gruppenpartnern die Aufgaben gelöst wurden.
+
+\medskip\noindent
+Der Fachbereich Informatik misst der Einhaltung der Grundregeln der wissenschaftlichen Ethik großen Wert bei. Zu diesen gehört auch die strikte Verfolgung von Plagiarismus. Falls dieser Fall eintritt, behalten wir uns das Recht vor für diese Abgabe den jeweiligen Gruppen keine Punkte gutzuschreiben.
+
+\medskip\noindent
+Bitte reichen Sie Ihre Abgabe bis spätestens Freitag 09.11.2018 um 11:40 Uhr ein. Verspätete Abgaben können nicht berücksichtigt werden.
+
+\paragraph{Hausübung 1: PGP (2 Punkte -- Einzelabgabe).} Sie haben in der Vorlesung das Schutzziele Dreieck (C.I.A.) kennengelernt. Ein Beispiel Angriff auf die Confidentiality ist das Mitlesen der Internetkommunikation, wie z.B. ihrer Emails. Dieses Problem kann man leicht beheben indem man die Emailkommunikation verschlüsselt. PGP (Pretty Good Privacy) ist ein Programm zum Verschlüsseln (und signieren) von Daten und basiert auf einem Public-key (asymetrisches) Verfahren. Führen Sie folgende Schritte durch:
+\begin{itemize}
+\item Installieren Sie PGP kostenlos für Ihr bevorzugtes Betriebssystem.
+\item Generieren Sie für Ihre Emailadresse ein Schlüsselpaar und besorgen Sie sich aus Moodel den öffentlichen Schlüssel Ihres Tutors, sowie die jeweilige Emailadresse.
+\item Schicken Sie dann eine verschlüsselte Email an ihren Tutor mit dem Betreff \emph{ComSySec - Hausübung 1} und mit folgenden Informationen: Ihr Name, Name des Tutors, Übungstermin (inkl. Gruppennummer) und Raumnummer.  
+\end{itemize}
+
+\subsection*{Hausübung 2: Permutationschiffre und Operationsmodi}
+
+In der Vorlesung haben Sie das Konzept der Blockchiffre und verschiedene Operationsmodi (u.a. ECB und CBC) kennengelernt. Wir definieren eine Blockchiffre $E$, die die Eingabebits permutiert, wobei die Permutation $\pi$ als Schlüssel fungiert. Die Ver- und Entschlüsselung sei gegeben durch
+\begin{align*}
+\mathrm{Enc}((b_1,\dots,b_n),\pi) &:= (b_{\pi(1)},\dots,b_{\pi(n)})\\
+Dec((d_1,\dots,d_n),\pi) &:= (d_{\pi^{-1}(1)},\dots,d_{\pi^{-1}(n)})  
+\end{align*}
+\emph{Zeigen Sie, dass dies ein Chiffriersystem definiert. Hinweis: Zeigen Sie, dass Ver- und Entschlüsselung kommutieren.}
+
+\medskip\noindent
+Dieses System definiert genau dann ein Chiffriersystem, wenn jede mögliche Nachricht ver- und entschlüsselt werden kann, und die originale Nachricht daraus resultiert.
+\begin{equation*}
+\mathrm{Dec}(\mathrm{Enc}((m_1, \dots, m_n), \pi), \pi) = (m_1, \dots, m_n)
+\end{equation*}
+Das ist genau dann wahr, wenn die Applikation der Permutation und die darauffolgende Applikation der Inversen der Permutation die originalen Bits zurückgibt. 
+\begin{equation*}
+\forall n \in \mathbb{N} : n = \pi^{-1}(\pi(n))  
+\end{equation*}
+Da eine Permutation eben so definiert ist, ist dieses ein Chiffriersystem.
+
+\bigskip\noindent
+\emph{Betrachten Sie nun speziell im Fall $n = 3$ den Schlüssel $\pi = \begin{pmatrix}1&2&3\\2&1&3\end{pmatrix}$ und verschlüsseln Sie den String \texttt{101010101010} im ECB-Mode.}
+
+\medskip\noindent
+Hier kann man ein kleines Ruby-Programm schreiben, um das Ganze zu vereinfachen.
+\begin{lstlisting}[language=ruby]
+def encrypt_ecb(permutations, data)
+  data.scan(/.{3}/).map do |block|
+    permutations
+      .sort_by{|_, v|}
+      .map{|_, p| block[p-1]}
+      .join
+  end.join
+end
+
+puts encrypt_ecb({1 => 2, 2 => 1, 3 => 3}, "101010101010")
+\end{lstlisting}
+Dieses Progremm gibt als ECB-Verschlüsslung den String \verb|011100011100| aus.
+
+\bigskip\noindent
+\emph{Gegeben sei eine Sequenz $m_1, m_2, \dots, m_n$ von Klartexten, die mittels einer beliebigen Blockchiffre im ECB oder CBC-Modus verschlüsselt wird, um eine Sequenz von Chiffraten $c_1, c_2, \dots, c_n$ zu erhalten. Nehmen Sie an, dass bei der Übertragung von $c_1$ ein Fehler passiert (d.h. einige Bits von $c_1$ werden falsch übermittelt). Wieviele Blöcke der Sequenz $m_1, m_2, \dots , m_n$ werden durch den Empfänger falsch rekonstruiert, wenn der ECB oder CBC-Modus verwendet wird? Begründen Sie Ihre Antwort.}
+
+\medskip\noindent
+Wenn der ECB-Modus verwendet wird, dann wird nur $c_1$ falsch entschlüsselt. Die Blocks im ECB-Modus hängen nicht voneinander ab, also werden Übertragungsfehler auch nicht auf sukzessive Blocks weitergegeben. Nur $m_1$ wird also fehlerhaft sein. 
+Anders sieht das beim CBC-Modus aus. Hier wird ebenso $c_1$ falsch entschlüsselt,  gleichzeitig gibt es aber auch einen Bitfehler in $m_2$, da dieser von $c_1$ abhängt (welches falsch ist). Also sind hier $m_1$ falsch sein und $m_2$ wird einige falsche Bits haben (an genau den Stellen, an den $c_1$ falsche Bits hat).
+Um das zu demonstrieren, kann man ein kleines Ruby-Programm schreiben, was das ganze austestet. 
+\begin{lstlisting}[language=ruby]
+require "openssl"
+
+# data (four blocks big)
+data = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ;"
+
+# encrypt data
+cipher = OpenSSL::Cipher::AES.new(128, :CBC)
+cipher.encrypt
+key = cipher.random_key
+iv = cipher.random_iv
+encrypted = cipher.update(data) + cipher.final
+orig_enc = encrypted.dup
+
+# mutate first block of cipher
+12.times do
+  char = rand(16)
+  bit  = rand(8)
+  encrypted[char] = (encrypted[char].bytes.first ^ (1 << bit)).chr
+end
+
+# decrypt data
+decipher = OpenSSL::Cipher::AES.new(128, :CBC)
+decipher.decrypt
+decipher.key = key
+decipher.iv = iv
+plain = decipher.update(encrypted) + decipher.final
+
+# analyze resulting plaintext
+plain.bytes.zip(data.bytes).each_slice(16).each_with_index do |block, count|
+  diffs = 0
+  block.each do |bytepair|
+    diffs += (0..8)
+      .map{|bit| bit = (1 << bit); (bytepair[0] & bit) ^ (bytepair[1] & bit) != 0}
+      .inject(0){|a,b| if b then a + 1 else a end}
+  end
+  puts "block #{count}: #{diffs}"
+end  
+\end{lstlisting}
+Dieses Programm verschlüsselt ein paar Daten mit AES128. Von den resultierenden Chiffraten werden 12 zufällig ausgewählte Bits verändert. Dann werden diese Entschlüsselt. Die entschlüsselten Daten werden nun, Block-für-Block, mit dem originalen Daten verglichen, und es wird ausgegeben, wie viele Bitfehler entstanden sind. Der Output von diesem Programm sieht so aus:
+\begin{lstlisting}
+block 0: 64
+block 1: 12
+block 2: 0
+block 3: 0  
+\end{lstlisting}
+Hier sieht man, dass im ersten Block 64 Bitfehler entstanden sind (man erwartet, dass 50\% der Bits fehlerhaft sind, das ist also exakt wie erwartet). Im zweiten Block sind nur noch 12 Bitfehler (das macht ebenso Sinn, da hier nur die Bits falsch sind, die im ersten Chiffratenblock falsch waren). Das Experiment bestätigt also diese Antwort.
+
+\paragraph{Hausübung 3: Kasiski-Test.} Sie haben einen Ciphertext abgefangen und wissen, dass es sich bei der Verschlüsselung um eine Vigenère-Verschlüsselung handelt. Der Ciphertext hat die folgende Form:
+\begin{verbatim}
+    EckOstgloaUclxatrxmfUclxrvkuikugfqwobxvKdfeywtqxpdbcgkw
+    CcbomsxxrKdfeywtqxpfhcaxvjclkmubtwafqbgzpdmaafbxvzpjxr
+\end{verbatim}
+Wenden Sie den Kasiski-Test an, um die benutzte Schlüssellänge zu ermitteln. Bearbeiten Sie dafür folgende Schritte:
+\begin{enumerate}[label=\alph*)]
+\item Suchen Sie alle eindeutig doppelt vorkommende $N$-Gramme (für $N \leq 4$) im Ciphertext und berechnen Sie den Abstand (Position des ersten Auftretens minus die Position des zweiten Auftretens) zwischen beiden gleichen $N$-Grammen.
+\item Bestimmen Sie die Primfaktorzerlegung für alle gefundenen Differenzen.
+\item Für den Fall, dass die Wiederholung des $N$-Gramms nicht zufällig, sondern aufgrund einer Wiederholung eines $N$-Gramms im Klartext aufgetreten ist, enthält die Primfaktorzerlegung dieser Differenz einen Teiler der Schlüssellänge oder die Schlüssellänge selbst. Vermuten Sie die Länge des verwendeten Schlüssels.
+\item Nachdem Sie die Schlüssellänge in Aufgabenteil c) bestimmt haben, versuchen Sie nun den Text zu entschlüsseln. Sie konnten außerdem in Erfahrung bringen, dass der zweite Buchstabe im Schlüssel ein \verb|Y| und der Vierte ein \verb|E| ist. Benutzen Sie diese Information um den Schlüssel zu ermitteln und dann den Klartext zu berechnen.
+\end{enumerate}
+
+
+
+% TODO
+
+
+\end{document}
