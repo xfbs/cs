@@ -3,21 +3,23 @@
 data = "EckOstgloaUclxatrxmfUclxrvkuikugfqwobxvKdfeywtqxpdbcgkwCcbomsxxrKdfeywtqxpfhcaxvjclkmubtwafqbgzpdmaafbxvzpjxr"
 
 # find n-grams (4 or longer) and their distance. 
-ngrams = []
-(0..data.size).each do |a|
-  (a+1..data.size).each do |b|
-    len = 0
-    while data[a+len] == data[b+len]
-      len += 1
-    end
-
-    if len >= 2
-      ngrams << [b - a, data[a...a+len]]
-    end
-  end
+def ngrams(data, min=4)
+  (1..data.size).map do |offset|
+    (0..data.size-offset)
+      .map{|pos| data[pos] == data[pos+offset]}
+      .chunk(&:itself)
+      .map{|c| [c[0], c[1].length]}
+      .inject([[false, 0, 0]]){|c,o| c << [o[0], c[-1][1] + o[1], o[1]]}
+      .select{|c| c[0] && c[2] >= min}
+      .map{|c| [c[1]-c[2], offset, c[2], data[c[1]-c[2], c[2]]]}
+  end.flatten(1)
 end
 
-# p ngrams
+ngrams(data).each do |pos, offset, len, word|
+  puts "word '#{word}' repeated with offset #{offset} at position #{pos}."
+end
+
+exit
 
 
 # find key
