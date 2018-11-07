@@ -125,7 +125,7 @@ Durch eine Schwachstelle in einer Web Applikation ist es beliebigen (auch nicht 
 \subsection*{Aufgabe 3: Teilertheorie und Modulare Arithmetik}
 
 
-\emph{Berechnen SieL}
+\emph{Berechnen Sie:}
 \begin{align*}
 \text{i)}&& 7 \equiv 1&\mod 2 & \text{ii)}&& 3^5 = 243 \equiv 5&\mod 7 \\
 \text{iii)}&&4^3 \equiv 1^3 = 1&\mod 3 & \text{iv)}&& 12 \equiv 0 &\mod 4\\
@@ -160,6 +160,10 @@ euclid(595, 429) = 1
 
 \bigskip\noindent
 \emph{Sei $n \in \mathbb{N}$ und sei $p \in \mathbb{N}$ ein Teiler von $n$, d. h. $p \mid n$. Zeigen Sie:}
+\begin{equation*}
+a \equiv b \mod n \implies a \equiv b \mod p \quad\text{ für alle } a, b \in \mathbb{Z}   
+\end{equation*}
+
 
 \medskip\noindent
 \hl{TODO}.
@@ -177,6 +181,8 @@ Bei einer One-Time-Pad-Verschlüsselung benutzt man die bitweise Exclusive-OR (X
 \bigskip\noindent
 \emph{Gegeben sind folgende Nachricht $m = 1010\,1111$ und der Schlüssel $k = 1111\,0000$. Berechnen Sie das OTP Chiffrat.}
 
+\medskip\noindent
+Um das Chiffrat zu bestimmen, wird die XOR-Operation auf die Bits der Nachricht und die des Schlüssels angewendet.
 \begin{equation*}
 \begin{array}{c}
 \phantom{\oplus9}1010\,1111\\
@@ -191,13 +197,34 @@ Bei einer One-Time-Pad-Verschlüsselung benutzt man die bitweise Exclusive-OR (X
 \medskip\noindent
 Perfekte Sicherheit ist die Eigenschaft einer Verschlüsselung, dass das Chiffrat keine Informationen über die Nachricht besitzt. Es können aus diesem also keine Schlüsse über die Nachricht gezogen werden. OTP besitzt perfekte Sicherheit, wenn der Schlüssel geheim ist und zufällig generiert wurde. 
 
-Da der Schlüssel zufällig gewählt wurde, ist jedes Bit zu 50\% $1$ und zu 50\% $0$. Durch den XOR-Operator wird damit jedes Bit der Nachricht zu 50\% geflipped. Damit besitzt das Chriffrat keine Informationen mehr über die Nachricht: jedes Bit ist zu 50\% ein Bit der Nachricht oder zu 50\% ein geflipptes Bit. 
+Da der Schlüssel zufällig gewählt wurde, ist jedes Bit zu 50\% $1$ und zu 50\% $0$. Durch den XOR-Operator wird damit jedes Bit der Nachricht zu 50\% gewechselt. Damit besitzt das Chriffrat keine Informationen mehr über die Nachricht: für jedes Bit ist die Wahrscheinlichkeit gleich, dass es ein Bit der Nachricht ist, und dass es ein gewechseltes Bit ist.
 
 \bigskip\noindent
 \emph{Diskutieren Sie warum das OTP unsicher wird sobald man den Schlüssel mehrmals verwendet. Unter welchen Umständen wird das OTP auch unsicher?}
 
 \medskip\noindent
-\hl{TODO}.
+Wenn man eine andere Nachricht, sagen wir $m' = 0011\,0011$ mit dem OTP mit dem selben Schlüssel $k$ verschlüsselt, dann bekommt man das Chiffrat $c'$. 
+\begin{equation*}
+\begin{array}{c}
+\phantom{\oplus9}0011\,0011\\
+\underline{\oplus\phantom{9}1111\,0000}\\
+\phantom{\oplus9}1100\,0011\\
+\end{array}
+\end{equation*}
+Idealerweise sollten diese beiden Chiffrate $c$ und $c'$ \emph{keine} Informationen über die Nachrichten $m$ und $m'$ enthalten. Da hier der selbe Schlüssel verwendet wurde, ist dem aber nicht der Fall. Wegen der Eigenschaften der XOR-Operation gilt: $m \oplus m' = c \oplus c'$. 
+\begin{align*}
+\begin{array}{c}
+\phantom{\oplus9}1010\,1111\\
+\underline{\oplus\phantom{9}0011\,0011}\\
+\phantom{\oplus9}1001\,1100\\
+\end{array}&&
+\begin{array}{c}
+\phantom{\oplus9}0101\,1111\\
+\underline{\oplus\phantom{9}1100\,0011}\\
+\phantom{\oplus9}1001\,1100\\
+\end{array}&
+\end{align*}
+OTP wird also unsicher, wenn man einen Schlüssel mehrfach verwendet, weil dann Informationen über die Nachrichten preisgegeben werden.
 
 \bigskip\noindent
 \emph{Diskutieren Sie was passiert wenn Sie XOR ($\oplus$) durch die Operation ODER ($\vee$) im OTP ersetzen.}
@@ -214,6 +241,7 @@ Diese Eigenschaft ist mit dem ODER-Operator nicht gegeben, was an folgenden Beis
 
 \subsection*{Aufgabe 5: Angriff auf eine Chiffre (Known-Plaintext-Attack)}
 
+\itshape
 Im Folgenden wollen wir einen Angriff auf eine Chiffre betrachten. Die zu verschlüsselende Nachricht $m$ und das resultierende Chiffrat $c$ sind Bitstrings der Länge $n$ (d.h. $m, c \in \{0, 1\}^n$). Der für die Verschlüsselung notwendige Schlüssel ist folgendermaßen definiert:
 \begin{itemize}
 \item einem Bitstring $k \in \{0, 1\}^n$.
@@ -227,13 +255,26 @@ Die Verschlüsselungsoperation für eine beliebige Nachricht $m \in \{0, 1\}^n$ 
 \end{enumerate}
 Dadurch erhalten Sie das Chiffrat $c = (c_1, \dots, c_n)$.
 
-Sie haben jetzt folgende Klartext und Chiffrat Paare abgefangen:
+\begin{table}[!h]\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\bfseries\small\sffamily\caps{M} & \bfseries\small\sffamily\caps{C}\\
+\midrule
+0000 & 1010\\
+0001 & 1111\\
+0011 & 1100\\
+0111 & 0100\\
+1111 & 1110\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-% TODO Table
+\noindent
+Sie haben jetzt diese Klartext und Chiffrat Paare abgefangen. Diese Informationen genügen, um jedes beliebige Chiffrat effizient zu entschlüsseln, obwohl die Funktionen $f_i$ und die Matrix $M$ unbekannt sind. Brechen Sie die obige Chiffre und berechnen Sie den Klartext hinder dem Chiffrat $c = (0010)$.
+\upshape
 
-Diese Informationen genügen, um jedes beliebige Chiffrat effizient zu entschlüsseln, obwohl die Funktionen $f_i$ und die Matrix $M$ unbekannt sind. Brechen Sie die obige Chiffre und berechnen Sie den Klartext hinder dem Chiffrat $c = (0010)$.
-
-% TODO
+\medskip\noindent
+\hl{TODO}.
 
 \section{Hausübung}
 
@@ -356,43 +397,50 @@ Hier sieht man, dass im ersten Block 64 Bitfehler entstanden sind (man erwartet,
 \emph{Suchen Sie alle eindeutig doppelt vorkommende $N$-Gramme (für $N \leq 4$) im Ciphertext und berechnen Sie den Abstand (Position des ersten Auftretens minus die Position des zweiten Auftretens) zwischen beiden gleichen $N$-Grammen.}
 
 \medskip\noindent
-Hier kann man ein kleines Ruby-Programm schreiben, um die N-Gramme und deren Abstand zu finden.
-\begin{lstlisting}[language=ruby,numbers=left]
-data = "EckOstgloaUclxatrxmfUclxrvkuikugfqwobxvKdfeywtqxpdbcgkwCcbomsxxrKdfeyw
-tqxpfhcaxvjclkmubtwafqbgzpdmaafbxvzpjxr".split.join
+Hier kann man ein kleines Ruby-Programm schreiben, um die N-Gramme und deren Abstand zu finden. 
+\begin{lstlisting}[language=ruby,numbers=left,breaklines=true]
+data = "EckOstgloaUclxatrxmfUclxrvkuikugfqwobxvKdfeywtqxpdbcgkw
+CcbomsxxrKdfeywtqxpfhcaxvjclkmubtwafqbgzpdmaafbxvzpjxr".split.join
 
 # find n-grams (4 or longer) and their distance. 
-ngrams = []
-(0..data.size).each do |a|
-  (a+1..data.size).each do |b|
-    len = 0
-    while data[a+len] == data[b+len]
-      len += 1
-    end
-
-    if len >= 4
-      ngrams << [b - a, data[a...a+len]]
-    end
-  end
+def ngrams(data, min=4)
+  (1..data.size).map do |offset|
+    (0..data.size-offset)
+      .map{|pos| data[pos] == data[pos+offset]}
+      .chunk(&:itself)
+      .map{|c| [c[0], c[1].length]}
+      .inject([[false, 0, 0]]){|c,o| c << [o[0], c[-1][1] + o[1], o[1]]}
+      .select{|c| c[0] && c[2] >= min}
+      .map{|c| [c[1]-c[2], offset, c[2], data[c[1]-c[2], c[2]]]}
+  end.flatten(1)
 end
 
-p ngrams  
+ngrams(data).each do |pos, offset, len, word|
+  puts "word '#{word}' repeated with offset #{offset} at position #{pos}."
+end
 \end{lstlisting}
-Dieses Programm findet zwei N-Gramme.
+Wenn man dieses Programm ausführt, erhält man zwei N-Gramme. 
+\begin{lstlisting}
+word 'Uclx' repeated with offset 10 at position 10.
+word 'Kdfeywtqxp' repeated with offset 25 at position 39.
+\end{lstlisting}
 
 \bigskip\noindent
 \emph{Bestimmen Sie die Primfaktorzerlegung für alle gefundenen Differenzen.}
 
+\medskip\noindent
+Die N-Gramme haben einen Abstand von $10 = 2 \cdot 5$ und $25 = 5 \cdot 5$ Stellen. 
+
 \bigskip\noindent
 \emph{Für den Fall, dass die Wiederholung des $N$-Gramms nicht zufällig, sondern aufgrund einer Wiederholung eines $N$-Gramms im Klartext aufgetreten ist, enthält die Primfaktorzerlegung dieser Differenz einen Teiler der Schlüssellänge oder die Schlüssellänge selbst. Vermuten Sie die Länge des verwendeten Schlüssels.}
+
+\medskip\noindent
+Wenn man davon ausgeht, dass beiden N-Gramme nicht zufällig auftritt, dann sollte der Schlüssel eine Länge von 5 Buchstaben haben, weil dieser Primfaktor in beiden Zerlegungen vorkommt.
 
 \bigskip\noindent
 \emph{Nachdem Sie die Schlüssellänge in Aufgabenteil c) bestimmt haben, versuchen Sie nun den Text zu entschlüsseln. Sie konnten außerdem in Erfahrung bringen, dass der zweite Buchstabe im Schlüssel ein \texttt{Y} und der Vierte ein \texttt{E} ist. Benutzen Sie diese Information um den Schlüssel zu ermitteln und dann den Klartext zu berechnen.}
 
-
-
-
-% TODO
-
+\medskip\noindent
+\hl{TODO}.
 
 \end{document}
