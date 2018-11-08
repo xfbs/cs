@@ -19,8 +19,20 @@ ngrams(data).each do |pos, offset, len, word|
   puts "word '#{word}' repeated with offset #{offset} at position #{pos}."
 end
 
-exit
+def decrypt(key, data)
+  key = key.chars.map{|c| c.ord - "A".ord}
+  data
+    .chars
+    .map{|c| [c.upcase.ord - "A".ord, c.upcase == c]}
+    .zip(key.cycle)
+    .map{|d, k| if d[1] then "A".ord else "a".ord end + (d[0] - k) % 26}
+    .map(&:chr)
+    .join
+end
 
+puts decrypt("BYTES", data)
+
+exit
 
 # find key
 keylength = 5
