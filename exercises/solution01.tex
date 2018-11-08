@@ -245,7 +245,7 @@ Diese Eigenschaft ist mit dem ODER-Operator nicht gegeben, was an folgenden Beis
 Im Folgenden wollen wir einen Angriff auf eine Chiffre betrachten. Die zu verschlüsselende Nachricht $m$ und das resultierende Chiffrat $c$ sind Bitstrings der Länge $n$ (d.h. $m, c \in \{0, 1\}^n$). Der für die Verschlüsselung notwendige Schlüssel ist folgendermaßen definiert:
 \begin{itemize}
 \item einem Bitstring $k \in \{0, 1\}^n$.
-\item einer quadratischen invertierbaren Matrix $M \in \{0, 1\}^{n \times m}$.
+\item einer quadratischen invertierbaren Matrix $M \in \{0, 1\}^{n \times n}$.
 \item Funktionen $f_i: \{0, 1\}^n \to \{0, 1\}$ für $i = 1,\dots, n$.
 \end{itemize}
 Die Verschlüsselungsoperation für eine beliebige Nachricht $m \in \{0, 1\}^n$ und Schlüssel ist wie folgt definiert:
@@ -262,7 +262,7 @@ Dadurch erhalten Sie das Chiffrat $c = (c_1, \dots, c_n)$.
 \midrule
 0000 & 1010\\
 0001 & 1111\\
-0011 & 1100\\
+0011 & 0011\\
 0111 & 0100\\
 1111 & 1110\\
 \bottomrule
@@ -270,11 +270,26 @@ Dadurch erhalten Sie das Chiffrat $c = (c_1, \dots, c_n)$.
 \end{table}
 
 \noindent
-Sie haben jetzt diese Klartext und Chiffrat Paare abgefangen. Diese Informationen genügen, um jedes beliebige Chiffrat effizient zu entschlüsseln, obwohl die Funktionen $f_i$ und die Matrix $M$ unbekannt sind. Brechen Sie die obige Chiffre und berechnen Sie den Klartext hinder dem Chiffrat $c = (0010)$.
+Sie haben jetzt diese Klartext und Chiffrat Paare abgefangen. Diese Informationen genügen, um jedes beliebige Chiffrat effizient zu entschlüsseln, obwohl die Funktionen $f_i$ und die Matrix $M$ unbekannt sind. Brechen Sie die obige Chiffre und berechnen Sie den Klartext hinter dem Chiffrat $c = (0010)$.
 \upshape
 
 \medskip\noindent
-\hl{TODO}.
+Weil hier der Keyspace klein ist, ist es möglich, alle möglichen Schlüssel auszuprobieren. Es ist außerdem möglich, diese Verschlüsselung vereinfacht zu modellieren. So müssen wir zum Beispiel nicht den Bitstring $k$ und alle $f_i$ kennen, es reicht $f_i(k)$ für $i = 1, \dots, n$ zu kennen (in diesem Fall ist $n = 4$. Das sind vier Bits an Informationen, dazu kommt, dass man die Matrix $M$ kennen muss, die 16 Bits an Informationen enthält.
+
+Wir können einmal alle möglichen Matrizen generieren und herausfinden, wie viele überhaupt invertierbar sind, was den Keyspace noch weiter einschränkt. Dafür kann man ein kleines Ruby-Programm verwenden.
+\begin{lstlisting}[language=ruby]
+require "matrix"
+
+matrices = (2**16)
+  .times
+  .map{|n| n.to_s(2).rjust(16,'0')}
+  .map{|n| n.chars.map{|c| c.to_i}}
+  .map{|n| Matrix[n[0,4], n[4,4], n[8,4], n[12,4]].det}
+  .count{|n| n != 0}
+  
+p matrices.size
+\end{lstlisting}
+Wenn man dieses Programm ausführt, bekommt man als Ergebnis 22560, was nur 34\% der theoretisch möglichen $2^{16}$ Matrizen ist. Also schreiben wir ein weiteres Programm, welches alle möglichen Matrizen und Bitstrings $t \in \{0, 1\}^4$ durchgeht, und testet, ob diese möglich sind. \hl{TODO}.
 
 \section{Hausübung}
 
@@ -441,6 +456,20 @@ Wenn man davon ausgeht, dass beiden N-Gramme nicht zufällig auftritt, dann soll
 \emph{Nachdem Sie die Schlüssellänge in Aufgabenteil c) bestimmt haben, versuchen Sie nun den Text zu entschlüsseln. Sie konnten außerdem in Erfahrung bringen, dass der zweite Buchstabe im Schlüssel ein \texttt{Y} und der Vierte ein \texttt{E} ist. Benutzen Sie diese Information um den Schlüssel zu ermitteln und dann den Klartext zu berechnen.}
 
 \medskip\noindent
-\hl{TODO}.
+Der Schlüssel ist \texttt{BYTES}. Mit einem simplen Ruby-Funktion und dem Schlüssel kann man die Nachricht entschlüsseln.
+\begin{lstlisting}[language=Ruby]
+def decrypt(key, data)
+  key = key.chars.map{|c| c.ord - "A".ord}
+  data
+    .chars
+    .map{|c| [c.upcase.ord - "A".ord, c.upcase == c]}
+    .zip(key.cycle)
+    .map{|d, k| if d[1] then "A".ord else "a".ord end + (d[0] - k) % 26}
+    .map(&:chr)
+    .join
+end
+\end{lstlisting}
+Die entschlüsselte Nachricht lautet: \emph{Der Kasiski Test ist ein Test zum bestimmen der Schluessellaenge. Bei kurzen Schluesseln geht dies gut da sie sich oft wiederholen.}
+
 
 \end{document}
