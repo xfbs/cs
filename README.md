@@ -13,9 +13,7 @@
 *   Notizen zur Vorlesung: [PDF](notizen.pdf).
 
 Übungen werden elektronisch (per Moodle) abgegeben. 
-Jeden Freitag gibt es eine neue Übung, für die jeweils zwei Wochen Zeit sind, und die elektronisch auf Moodle abgegeben werden müssen. Gruppenarbeit ist bei den Übungen erlaubt. Durch die Übungen kann ein Bonus für die Klausur generiert werden.
-
-Die Klausur ist *Open-Book*, es dürfen also schriftliche (aber keine elektronischen) Hilfsmittel genutzt werden. 
+Jeden Freitag gibt es eine neue Übung, für die jeweils zwei Wochen Zeit sind, und die elektronisch auf Moodle abgegeben werden müssen. Gruppenarbeit ist bei den Übungen erlaubt. Durch die Übungen kann ein Bonus für die Klausur generiert werden. Die Klausur ist *Open-Book*, es dürfen also schriftliche (aber keine elektronischen) Hilfsmittel genutzt werden. 
 
 ## Nützliches
 
@@ -48,8 +46,9 @@ Teil II: IT-Sicherheit und Zuverlässigkeit
 
 ## Übungen
 
-- [X] Übung 1 (29.10.2018 – 09.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/92981/mod_resource/content/1/1exercise.pdf). [Zusatzmaterial](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/92980/mod_resource/content/1/Zusatzmaterial%20zu%20Hausuebung1.pdf). [Präsenzlösung](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/93038/mod_resource/content/1/1solutionpraesenz.pdf).
+- [X] Übung 1 (Abgabe 09.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/92981/mod_resource/content/1/1exercise.pdf). [Zusatzmaterial](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/92980/mod_resource/content/1/Zusatzmaterial%20zu%20Hausuebung1.pdf). [Präsenzlösung](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/93038/mod_resource/content/1/1solutionpraesenz.pdf).
     - [X] [Abgabe](exercises/solution01.pdf). Punkte: 10/10
+- [ ] Übung 2 (Abgabe 23.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/94126/mod_resource/content/1/2exercise.pdf). 
 
 ## Literatur
 
