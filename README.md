@@ -53,3 +53,7 @@ Teil II: IT-Sicherheit und Zuverlässigkeit
 ## Literatur
 
 *TBA.*
+
+-   *Crypto 101*: Introductory course on cryptography, freely available for programmers of all ages and skill levels. <https://www.crypto101.io>.
+-   Bruce Schneier: *Applied Cryptography*. Published at John Wiley & Sons in 1996. 
+
