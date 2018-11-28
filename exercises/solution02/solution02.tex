@@ -1,0 +1,171 @@
+\documentclass[
+  ngerman,
+  DIV=12
+]{scrartcl}
+\usepackage{babel}
+\usepackage{csquotes}
+
+% typography
+\usepackage{fontspec}
+\usepackage{newpxmath}
+\setsansfont{Open Sans}[
+  BoldFont={Open Sans Bold},
+  ItalicFont={Open Sans Italic}]
+\setmonofont[Scale=0.87]{Menlo}
+\setmainfont{Palatino}
+\linespread{1.15}
+\usepackage[factor=1000]{microtype}
+
+% graphics, drawings, etc.
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{positioning}
+\newtcolorbox{anmerkung}{%
+  grow to left by=10pt,
+  colback=black!10,
+  colframe=white,
+  coltitle=black,
+  borderline west={4pt}{0pt}{black!30},
+  boxrule=0pt,
+  boxsep=0pt,
+  %breakable,
+  enhanced jigsaw,
+  title={Anmerkung\par},
+  fonttitle={\bfseries},
+  attach title to upper={}}
+
+% highlighting, lists, code
+\usepackage{soul}
+\usepackage{enumitem}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  numberstyle=\sffamily\footnotesize\color{gray},
+  %escapeinside=||,
+  keywordstyle=\color{blue!50!black},
+  stringstyle=\color{green!50!black}}
+\capsdef{////}{\scshape}{.16em}{.4em}{.2em}
+
+% math
+\usepackage{amsmath,amssymb}
+
+% nice tables
+\usepackage{booktabs}
+\newcommand{\tablespacing}[1]{\renewcommand{\arraystretch}{#1}}
+
+% links
+\usepackage[
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+]{hyperref}
+
+\title{Lösungsblatt Nr. 2}
+\date{Wintersemester 2018-2019}
+\author{Hendrik Beckmann, Ibrahim Osman,\\Patrick Elsen, Tiancheng Chen}
+\subject{Computersystemsicherheit}
+\publishers{Technische Universität Darmstadt}
+
+\begin{document}
+\maketitle
+
+\section*{Hausübung 1: Diffie-Hellman Schlüsselaustausch}
+
+\emph{Alice möchte mit Bob auf sichere Weise kommunizieren. In einer Einführungsveranstaltung zur Kryptographie erfährt Alice von dem Diffie-Hellman Schlüsselaustauschverfahren und möchte dieses dafür verwenden.}
+
+\emph{Finden Sie den vereinbarten Schlüssel.}
+
+Hier kann man ein kleines Ruby-Programm anwenden, um per Brute-Force an den geheimen Parameter $x$ zu kommen.
+\begin{lstlisting}[language=ruby,numbers=left]
+def compute_pub(g, p, sec)
+  (g * sec) % p
+end
+
+def compute_key(g, p, pub, sec)
+  (pub * sec) % p
+end
+
+p = 13
+g = 6
+
+pub_x = 2
+pub_y = 3
+
+sec_x = (1..p).select{|n| compute_pub(g, p,  n) == pub_x}
+p sec_x
+exit
+
+k = compute_key(g, p, pub_y, sec_x)
+
+puts "x is #{sec_x} and the key is #{k}."  
+\end{lstlisting}
+Dieses Programm berechnet als geheimen Parameter $x = 5$ und den Key $k = 9$.
+
+
+\emph{Alice entscheidet sich um ihren Rechenaufwand zu reduzieren eine additive Gruppe für den Diffie-Hellman-Schlüsselaustausch zu verwenden, d.h. statt $X = g^a$ verwendet sie jetzt $X = g \cdot a$. Begründen Sie, warum das keine gute Idee ist.}
+
+Der Diffie-Hellman Algorithmus besteht  auf der (in annehmbarer Zeit) Unlösbarkeit des diskreten Logarithmus. Der diskrete Logarithmus ist die Umkehrung der diskreten Exponentialfunktion $b^x \mod n$. Also genau die FUnktion, die für die Schlüsselberechnung genutzt wird. Alice's Funktion ist im Vergleich sehr einfach lösbar und somit nicht sicher.
+
+\section*{Hausübung 2: RSA}
+
+Hier kann man wieder ein kleines Ruby-Programm schreiben, um das Ergebnis zu berechnen.
+\begin{lstlisting}[language=ruby,numbers=left]
+n = 111791377
+e = 3
+
+transmitted = [106894622, 54756549, 49966544]
+
+def encrypt(m, e, n)
+  (m ** e) % n
+end
+
+grades = [10, 13, 17, 20, 23, 27, 30, 33, 37, 40, 50]
+alice = 174458
+
+candidates = grades
+  .map{|g| [g, "#{alice}#{g}"]}
+  .map{|g, m| [g, encrypt(m.to_i, e, n)]}
+match = candidates.select{|g, c| transmitted.include? c}.first
+
+puts "Alice's ciphertext war #{match[1]} und sie hat eine #{match[0]}."  
+\end{lstlisting}
+Dieses Programm gibt aus, dass Alice eine 1,7 hat, weil ihr Ciphertext 54756549 war.
+
+\section*{Hausübung 3: RSA}
+
+\emph{Alice und Bob haben von dem RSA-Verschlüsselungsver- fahren gehört und möchten sich das jetzt gerne etwas genauer ansehen.}
+
+\emph{Gegeben ist ein RSA-Modulus $N = p \cdot q$ mit $N = 77$ und $p = 7, q = 11$ bekannt. Weiterhin ist der public key $pk = (N,e) = (77,6)$ und Alice möchte mit diesem Schlüssel $m1 = 5$ und $m2 = 6$ verschlüsseln. Da Alice aber nicht mehr weiß wie das RSA-Verfahren funktioniert benötigt sie Ihre Hilfe. Berechnen Sie mit Hilfe des RSA-Verfahrens die Verschluüsselungen von m1 und m2.}
+
+Hier kann man ein kleines Ruby-Programm schreiben, um die Nachricht mit RSA zu verschlüsseln.
+\begin{lstlisting}[language=ruby,numbers=left]
+def encrypt(m, e, n)
+  (m ** e) % n
+end
+
+messages = [5, 6]
+n = 77
+e = 6
+
+p messages.map{|m| encrypt(m, e, n)}  
+\end{lstlisting}
+Dieses Programm gibt als Ergebnis $[71, 71]$ aus.
+
+\emph{Vergleichen Sie die beiden Ciphertexte. Was fällt Ihnen aus? Warum entsteht dieses
+Ergebnis?}
+
+Die beiden Ciphertexte sind identisch. Das liegt wahrscheinlich an dem Exponent $e$, der mit $p$ und $q$ nicht kompatibel ist. Besser ist es, wenn man eine Primzahl als Exponent benutzt.
+
+\emph{Bob besitzt den öffentlichen RSA-Schlüssel $(N, e) = (3127, 6)$ mit $N = pq$.
+Warum ist dies kein gültiger öffentlicher RSA-Schlüssel? Ändern Sie den ungültigen Anteil von Bobs öffentlichem Schlüssel minimal so ab, dass er gültig wird, und berechnen Sie anschließend den zugehörigen privaten Schlüssel d für ihn.}
+
+Für einen gültigen Schlüssel wählt man zwei Primzahlen $p$ und $q$ und berechnet $N = pq$. Dann wählt man ein $e$ für das gilt :$ggT(e, \lambda(N)) = 1$. Dies ist bei Bobs' Schlüssel nicht gegeben, da der $ggT(6, 2016) = 2$ ist. 
+
+Man kann die 6 zu einer 5 machen, dessen $ggT(5, 3016)$ ist 1. Damit ist der Schlüssel gültig. Den privaten Schlüssel berechnet man mit dem erweiterten Euklidischen Algorithmus.
+
+\end{document}
